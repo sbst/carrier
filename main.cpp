@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "LayoutReader.hpp"
+#include "NearestNeighbors.hpp"
 #include "SimplePermutation.hpp"
 #include "SimpleRecursive.hpp"
 
@@ -30,6 +31,18 @@ int main()
     std::cout << "recursive" << std::endl;
     std::cout << "cost: " << mut.getCost() << std::endl;
     route = mut.getRoute();
+    std::cout << "route: ";
+    for (auto& index : route)
+    {
+        std::cout << "(" << positions[index].x << "," << positions[index].y << ")" << " ";
+    }
+    std::cout << std::endl;
+
+    NearestNeighbors nn;
+    nn.calculate(positions, 0);
+    std::cout << "NN" << std::endl;
+    std::cout << "cost: " << nn.getCost() << std::endl;
+    route = nn.getRoute();
     std::cout << "route: ";
     for (auto& index : route)
     {
