@@ -1,18 +1,14 @@
 #pragma once
-#include <list>
 #include <optional>
 #include <unordered_set>
-#include <vector>
 
+#include "IRouter.hpp"
 #include "Structures.hpp"
 
-class SimpleRecursive
+class SimpleRecursive : public IRouter
 {
 public:
-    void calculate(const std::vector<Point>& positions, int startIndex);
-
-    double getCost() const;
-    std::list<int> getRoute() const;
+    std::list<int> route(const std::vector<Point>& positions, int startIndex) override;
 
 private:
     void traverse(const std::vector<Point>& positions, int iCurrent, std::unordered_set<int>& visited, std::list<int>& route, double cost);

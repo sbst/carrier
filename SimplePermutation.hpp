@@ -1,19 +1,8 @@
 #pragma once
-#include <list>
-#include <optional>
-#include <vector>
+#include "IRouter.hpp"
 
-#include "Structures.hpp"
-
-class SimplePermutation
+class SimplePermutation : public IRouter
 {
 public:
-    void calculate(const std::vector<Point>& positions, int startIndex);
-
-    double getCost() const;
-    std::list<int> getRoute() const;
-
-private:
-    std::optional<double> m_cost;
-    std::list<int> m_route;
+    std::list<int> route(const std::vector<Point>& positions, int startIndex) override;
 };

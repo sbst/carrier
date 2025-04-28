@@ -1,9 +1,12 @@
 #include "SimplePermutation.hpp"
 
 #include <iostream>
+#include <optional>
 
-void SimplePermutation::calculate(const std::vector<Point>& positions, int startIndex)
+std::list<int> SimplePermutation::route(const std::vector<Point>& positions, int startIndex)
 {
+    std::optional<double> minCost;
+    std::list<int> route;
     std::vector<int> order;
     order.push_back(startIndex);
     for (auto i = 0; i < positions.size(); i++)
@@ -20,26 +23,17 @@ void SimplePermutation::calculate(const std::vector<Point>& positions, int start
             cost += distance(positions[order[i - 1]], positions[order[i]]);
         }
 
-        if (m_cost.has_value() && m_cost.value() > cost)
+        if (minCost.has_value() && minCost.value() > cost)
         {
-            m_cost = cost;
-            m_route = std::list<int>(order.begin(), order.end());
+            minCost = cost;
+            route = std::list<int>(order.begin(), order.end());
         }
 
-        if (!m_cost.has_value())
+        if (!minCost.has_value())
         {
-            m_cost = cost;
-            m_route = std::list<int>(order.begin(), order.end());
+            minCost = cost;
+            route = std::list<int>(order.begin(), order.end());
         }
     } while (std::next_permutation(order.begin() + 1, order.end()));
-}
-
-double SimplePermutation::getCost() const
-{
-    return m_cost.value_or(0);
-}
-
-std::list<int> SimplePermutation::getRoute() const
-{
-    return m_route;
+    return route;
 }

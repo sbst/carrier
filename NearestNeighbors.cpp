@@ -1,27 +1,15 @@
 #include "NearestNeighbors.hpp"
 
-#include <algorithm>
 #include <unordered_set>
 
-NearestNeighbors::NearestNeighbors() : m_cost(0) {}
-
-double NearestNeighbors::getCost() const
+std::list<int> NearestNeighbors::route(const std::vector<Point>& positions, int startIndex)
 {
-    return m_cost;
-}
-
-std::list<int> NearestNeighbors::getRoute() const
-{
-    return m_route;
-}
-
-void NearestNeighbors::calculate(const std::vector<Point>& positions, int startIndex)
-{
+    std::list<int> route;
     std::unordered_set<int> visited;
     int current = startIndex;
     while (current != -1)
     {
-        m_route.push_back(current);
+        route.push_back(current);
         visited.insert(current);
         double minDistance = -1;
         int minNode = -1;
@@ -39,4 +27,5 @@ void NearestNeighbors::calculate(const std::vector<Point>& positions, int startI
         }
         current = minNode;
     }
+    return route;
 }
