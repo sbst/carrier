@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 
+#include "AntColony.hpp"
 #include "LayoutReader.hpp"
 #include "NearestNeighbors.hpp"
 #include "SimplePermutation.hpp"
@@ -36,6 +37,9 @@ int main()
 
     NearestNeighbors nen;
     execute(nen, positions, 0, "NearestNeighbors");
+
+    AntColony aco;
+    execute(aco, positions, 0, "AntColony");
 
     return 0;
 }
