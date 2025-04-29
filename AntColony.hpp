@@ -7,5 +7,11 @@ public:
     std::list<int> route(const std::vector<Point>& positions, int startIndex) override;
 
 private:
-    std::pair<std::vector<int>, double> traverse(const std::vector<Point>& positions, int startIndex);
+    struct RouteData
+    {
+        std::vector<int> route;
+        double cost;
+    };
+
+    RouteData traverse(const std::vector<Point>& positions, int startIndex, const std::vector<std::vector<double>>& intensity);
 };
