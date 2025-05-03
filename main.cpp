@@ -8,6 +8,7 @@
 #include "NearestNeighbors.hpp"
 #include "SimplePermutation.hpp"
 #include "SimpleRecursive.hpp"
+#include "layouts/CircleGenerator.hpp"
 #include "layouts/Reader.hpp"
 
 void execute(IRouter& router, const std::vector<Point>& positions, int startIndex, const std::string& name)
@@ -15,6 +16,11 @@ void execute(IRouter& router, const std::vector<Point>& positions, int startInde
     std::cout << name << std::endl;
     auto route = router.route(positions, startIndex);
     std::cout << "route: ";
+    for (auto& index : route)
+        std::cout << index << " ";
+    std::cout << std::endl;
+
+    std::cout << "nodes: ";
     for (auto& index : route)
         std::cout << positions.at(index) << " ";
     std::cout << std::endl;
@@ -28,7 +34,7 @@ void execute(IRouter& router, const std::vector<Point>& positions, int startInde
 
 int main()
 {
-    auto positions = readPointsFromFile("../layouts/data/diamond.txt");
+    auto positions = CirceGenerator(5).generate(4);
     SimpleRecursive rec;
     execute(rec, positions, 0, "Recursive");
 
