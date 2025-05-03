@@ -5,10 +5,10 @@
 #include <list>
 
 #include "AntColony.hpp"
-#include "LayoutReader.hpp"
 #include "NearestNeighbors.hpp"
 #include "SimplePermutation.hpp"
 #include "SimpleRecursive.hpp"
+#include "layouts/Reader.hpp"
 
 void execute(IRouter& router, const std::vector<Point>& positions, int startIndex, const std::string& name)
 {
@@ -28,7 +28,7 @@ void execute(IRouter& router, const std::vector<Point>& positions, int startInde
 
 int main()
 {
-    auto positions = readPointsFromFile("../layouts/diamond.txt");
+    auto positions = readPointsFromFile("../layouts/data/diamond.txt");
     SimpleRecursive rec;
     execute(rec, positions, 0, "Recursive");
 
