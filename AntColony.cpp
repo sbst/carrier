@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-// TODO: startIndex ignored
 std::list<int> AntColony::route(const std::vector<Point>& positions, int startIndex)
 {
     std::mt19937 generator(std::random_device{}());
@@ -29,7 +28,8 @@ std::list<int> AntColony::route(const std::vector<Point>& positions, int startIn
         std::priority_queue<RouteData, std::vector<RouteData>, decltype(cmp)> routes(cmp);
         for (auto ant = 0; ant < ants; ant++)
         {
-            routes.push(traverse(positions, distribution(generator), intensityTable));
+            int antStartIndex = startIndex;  // distribution(generator);
+            routes.push(traverse(positions, antStartIndex, intensityTable));
         }
 
         if (!minRoute.empty())  // force best route from previous runs
