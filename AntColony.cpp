@@ -12,8 +12,8 @@ AntColony::AntColony() : m_generator(std::random_device{}()) {}
 
 std::list<int> AntColony::route(const std::vector<Point>& positions, int startIndex)
 {
-    int iterations = 100;
-    int ants = 50;
+    int iterations = 75;
+    int ants = 10;
     int q = 10;
     double degradation = 0.9;
     std::vector<std::vector<double>> intensityTable(positions.size(), std::vector<double>(positions.size(), 0));
