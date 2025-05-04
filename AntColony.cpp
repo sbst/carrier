@@ -8,9 +8,10 @@
 #include <utility>
 #include <vector>
 
+AntColony::AntColony() : m_generator(std::random_device{}()) {}
+
 std::list<int> AntColony::route(const std::vector<Point>& positions, int startIndex)
 {
-    std::mt19937 generator(std::random_device{}());
     int iterations = 100;
     int ants = 50;
     int q = 10;
@@ -23,25 +24,21 @@ std::list<int> AntColony::route(const std::vector<Point>& positions, int startIn
     {
         std::uniform_int_distribution<int> distribution(0, positions.size() - 1);
 
-        // store ant result in min heap
-        auto cmp = [](const RouteData& left, const RouteData& right) { return left.cost > right.cost; };
-        std::priority_queue<RouteData, std::vector<RouteData>, decltype(cmp)> routes(cmp);
+        std::list<RouteData> routes;
         for (auto ant = 0; ant < ants; ant++)
         {
             int antStartIndex = startIndex;  // distribution(generator);
-            routes.push(traverse(positions, antStartIndex, intensityTable));
+            routes.push_back(traverse(positions, antStartIndex, intensityTable));
         }
 
         if (!minRoute.empty())  // force best route from previous runs
         {
-            routes.push(RouteData{minRoute, minCost});
+            routes.push_back(RouteData{minRoute, minCost});
         }
 
-        auto routesSize = routes.size() / 2;  // keep best half
-        for (auto i = 0; i < routesSize; i++)
+        while (!routes.empty())
         {
-            const auto& routeData = routes.top();
-            routes.pop();
+            const auto& routeData = routes.front();
             const auto& route = routeData.route;
             double costRoute = routeData.cost;
 
@@ -58,6 +55,7 @@ std::list<int> AntColony::route(const std::vector<Point>& positions, int startIn
                 intensityTable[route[i - 1]][route[i]] += delta;
                 intensityTable[route[i]][route[i - 1]] += delta;
             }
+            routes.pop_front();
 
             // all existing pheromones are degradating each update
             for (auto i = 0; i < intensityTable.size(); i++)
@@ -85,6 +83,7 @@ AntColony::RouteData AntColony::traverse(const std::vector<Point>& positions, in
 
     std::unordered_set<int> visited;
     int current = startIndex;
+    double cost = 0;
 
     while (current != -1)
     {
@@ -116,11 +115,9 @@ AntColony::RouteData AntColony::traverse(const std::vector<Point>& positions, in
             std::discrete_distribution<> distribution(weights.begin(), weights.end());
             std::size_t iWeightedRandomNeighbor = distribution(generator);
             next = neighbors.at(iWeightedRandomNeighbor);
+            cost += distance(positions[current], positions[next]);
         }
         current = next;
     }
-    double cost = 0;
-    for (auto i = 1; i < route.size(); i++)
-        cost += distance(positions[route[i - 1]], positions[route[i]]);
     return {route, cost};
 }
