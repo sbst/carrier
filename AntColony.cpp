@@ -101,7 +101,7 @@ AntColony::RouteData AntColony::traverse(const std::vector<Point>& positions, in
             if (visited.find(i) == visited.end())
             {
                 double pheromone = std::max(intensity[current][i], 1e-5);  // constant to start exploration
-                double weight = std::pow(pheromone, alpha) / distance(positions[current], positions[i]);
+                double weight = std::pow(pheromone, alpha) / std::pow(distance(positions[current], positions[i]), beta);
                 neighbors.push_back(i);
                 weights.push_back(weight);
             }
